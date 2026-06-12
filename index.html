@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fixture Familia Rodríguez – Mundial 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, updateDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // ─── FIREBASE CONFIG ────────────────────────────────────────────────────
+    // IMPORTANTE: Reemplaza estos valores con tu propio proyecto Firebase.
+    // Instrucciones al final del archivo HTML.
+    // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCB5PImes4IhoLYSPbO9S6Ku-uIWs8oAG8",
+  authDomain: "mundial-rodriguez.firebaseapp.com",
+  projectId: "mundial-rodriguez",
+  storageBucket: "mundial-rodriguez.firebasestorage.app",
+  messagingSenderId: "966833084311",
+  appId: "1:966833084311:web:6db8275612491073d756d2"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+    window.__db = db;
+    window.__firestore = { doc, setDoc, getDoc, collection, getDocs, updateDoc, onSnapshot, query, orderBy };
+    window.__firebaseReady = true;
+    window.dispatchEvent(new Event("firebase-ready"));
+  </script>
+
+  <style>
+    :root {
+      --bg:       #0a0e1a;
+      --surface:  #111827;
+      --card:     #1a2235;
+      --border:   #2a3650;
+      --accent:   #f7c948;
+      --accent2:  #3b82f6;
+      --green:    #22c55e;
+      --red:      #ef4444;
+      --text:     #e8eaf0;
+      --muted:    #6b7280;
+      --radius:   12px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);
+      color:var(--text);
+      font-family:'Inter',sans-serif;
+      min-height:100vh;
+    }
+
+    /* ── NAV ── */
+    nav{
+      position:sticky;top:0;z-index:100;
+      background:rgba(10,14,26,.92);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:.75rem 1.5rem;
+      gap:1rem;
+    }
+    .nav-logo{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:1.4rem;letter-spacing:.05em;
+      color:var(--accent);white-space:nowrap;
+    }
+    .nav-tabs{display:flex;gap:.5rem;flex-wrap:wrap}
+    .nav-tab{
+      background:transparent;border:1px solid var(--border);
+      color:var(--muted);padding:.4rem .9rem;
+      border-radius:20px;cursor:pointer;font-size:.8rem;font-weight:600;
+      transition:all .2s;
+    }
+    .nav-tab:hover,.nav-tab.active{
+      background:var(--accent);border-color:var(--accent);color:#000;
+    }
+    .nav-user{
+      font-size:.8rem;color:var(--muted);
+      display:flex;align-items:center;gap:.5rem;white-space:nowrap;
+    }
+    .btn-logout{
+      background:transparent;border:1px solid var(--border);
+      color:var(--muted);padding:.3rem .7rem;border-radius:6px;
+      cursor:pointer;font-size:.75rem;
+    }
+    .btn-logout:hover{border-color:var(--red);color:var(--red)}
+
+    /* ── HERO ── */
+    .hero{
+      text-align:center;
+      padding:3rem 1.5rem 2rem;
+      background:linear-gradient(180deg,rgba(247,201,72,.08) 0%,transparent 100%);
+    }
+    .hero-title{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(2.5rem,8vw,5rem);
+      letter-spacing:.04em;
+      line-height:1;
+      color:var(--text);
+    }
+    .hero-title span{color:var(--accent)}
+    .hero-sub{
+      font-size:.95rem;color:var(--muted);margin-top:.5rem;
+    }
+    .hero-badge{
+      display:inline-block;
+      background:var(--accent);color:#000;
+      font-weight:700;font-size:.75rem;
+      padding:.25rem .75rem;border-radius:20px;
+      margin-top:.75rem;
+      letter-spacing:.08em;
+    }
+
+    /* ── LOGIN ── */
+    #login-screen{
+      max-width:420px;margin:3rem auto;
+      background:var(--card);border:1px solid var(--border);
+      border-radius:var(--radius);padding:2rem;
+    }
+    #login-screen h2{
+      font-family:'Bebas Neue',sans-serif;font-size:1.8rem;
+      letter-spacing:.05em;margin-bottom:1rem;color:var(--accent);
+    }
+    .field{margin-bottom:1rem}
+    .field label{display:block;font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:.35rem}
+    .field input{
+      width:100%;background:var(--bg);border:1px solid var(--border);
+      color:var(--text);padding:.65rem .9rem;border-radius:8px;
+      font-size:.95rem;outline:none;transition:border-color .2s;
+    }
+    .field input:focus{border-color:var(--accent)}
+    .btn-primary{
+      width:100%;background:var(--accent);color:#000;
+      border:none;padding:.75rem;border-radius:8px;
+      font-weight:700;font-size:1rem;cursor:pointer;
+      transition:opacity .2s;
+    }
+    .btn-primary:hover{opacity:.85}
+    .login-note{font-size:.78rem;color:var(--muted);margin-top:.75rem;text-align:center}
+
+    /* ── SECTION TITLE ── */
+    .section-title{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:1.5rem;letter-spacing:.06em;color:var(--accent);
+      margin:2rem 1.5rem .75rem;
+    }
+
+    /* ── GROUPS GRID ── */
+    .groups-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+      gap:1rem;padding:0 1.5rem 1rem;
+    }
+    .group-card{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:var(--radius);overflow:hidden;
+    }
+    .group-header{
+      background:var(--accent);color:#000;
+      font-family:'Bebas Neue',sans-serif;
+      font-size:1rem;letter-spacing:.08em;
+      padding:.45rem 1rem;
+    }
+    .group-matches{padding:.5rem}
+
+    /* ── MATCH CARD ── */
+    .match-card{
+      background:var(--bg);border:1px solid var(--border);
+      border-radius:8px;padding:.75rem;margin-bottom:.5rem;
+    }
+    .match-card:last-child{margin-bottom:0}
+    .match-meta{font-size:.7rem;color:var(--muted);margin-bottom:.35rem}
+    .match-teams{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:.5rem;
+    }
+    .match-team{
+      flex:1;font-size:.85rem;font-weight:600;
+      display:flex;align-items:center;gap:.35rem;
+    }
+    .match-team.right{justify-content:flex-end}
+    .match-vs{
+      font-size:.75rem;font-weight:700;color:var(--muted);
+      padding:0 .25rem;white-space:nowrap;
+    }
+    .match-score-inputs{
+      display:flex;align-items:center;justify-content:center;
+      gap:.35rem;margin-top:.6rem;
+    }
+    .score-input{
+      width:40px;text-align:center;
+      background:var(--surface);border:1px solid var(--border);
+      color:var(--text);padding:.35rem .2rem;
+      border-radius:6px;font-size:.95rem;font-weight:700;
+      outline:none;transition:border-color .2s;
+    }
+    .score-input:focus{border-color:var(--accent2)}
+    .score-input:disabled{opacity:.45;cursor:not-allowed}
+    .score-dash{font-size:1rem;font-weight:700;color:var(--muted)}
+    .btn-save-match{
+      display:block;width:100%;
+      background:var(--accent2);border:none;color:#fff;
+      padding:.4rem;border-radius:6px;cursor:pointer;
+      font-size:.78rem;font-weight:600;margin-top:.5rem;
+      transition:opacity .2s;
+    }
+    .btn-save-match:hover:not(:disabled){opacity:.8}
+    .btn-save-match:disabled{opacity:.35;cursor:not-allowed}
+    .match-locked{
+      font-size:.72rem;color:var(--muted);text-align:center;
+      margin-top:.4rem;
+    }
+    .match-result-badge{
+      display:inline-block;
+      background:var(--green);color:#fff;
+      font-size:.65rem;font-weight:700;padding:.15rem .5rem;
+      border-radius:20px;margin-top:.4rem;
+    }
+    .match-result-badge.lost{background:var(--muted)}
+    .match-result-badge.partial{background:var(--accent);color:#000}
+    .predictions-summary{
+      font-size:.72rem;color:var(--muted);
+      margin-top:.4rem;
+    }
+    .pred-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.15rem}
+    .pred-name{font-weight:600;color:var(--text)}
+    .pred-score{color:var(--accent2)}
+
+    /* ── LEADERBOARD ── */
+    .leaderboard{
+      max-width:600px;margin:0 auto;padding:0 1.5rem 3rem;
+    }
+    .lb-row{
+      display:flex;align-items:center;
+      background:var(--card);border:1px solid var(--border);
+      border-radius:8px;padding:.75rem 1rem;
+      margin-bottom:.5rem;gap:1rem;
+      transition:background .2s;
+    }
+    .lb-row.me{border-color:var(--accent);background:rgba(247,201,72,.06)}
+    .lb-rank{
+      font-family:'Bebas Neue',sans-serif;font-size:1.5rem;
+      color:var(--muted);width:2rem;text-align:center;
+    }
+    .lb-rank.top1{color:gold}
+    .lb-rank.top2{color:silver}
+    .lb-rank.top3{color:#cd7f32}
+    .lb-name{flex:1;font-weight:600}
+    .lb-pts{
+      font-family:'Bebas Neue',sans-serif;font-size:1.3rem;
+      color:var(--accent);
+    }
+    .lb-detail{font-size:.72rem;color:var(--muted)}
+
+    /* ── KNOCKOUT ── */
+    .knockout-info{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:var(--radius);padding:1.25rem;
+      margin:0 1.5rem 1rem;
+    }
+    .knockout-info p{font-size:.85rem;color:var(--muted);line-height:1.6}
+    .knockout-info strong{color:var(--text)}
+
+    /* ── TABS ── */
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+
+    /* ── TOAST ── */
+    #toast{
+      position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);
+      background:var(--green);color:#fff;
+      padding:.6rem 1.5rem;border-radius:20px;
+      font-weight:600;font-size:.85rem;
+      opacity:0;pointer-events:none;
+      transition:opacity .3s;z-index:9999;
+    }
+    #toast.show{opacity:1}
+    #toast.error{background:var(--red)}
+
+    /* ── LOADER ── */
+    .loader{
+      display:flex;align-items:center;justify-content:center;
+      padding:3rem;color:var(--muted);gap:.5rem;
+    }
+    .spinner{
+      width:20px;height:20px;border:2px solid var(--border);
+      border-top-color:var(--accent);border-radius:50%;
+      animation:spin .7s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ── FIREBASE SETUP MODAL ── */
+    #setup-modal{
+      position:fixed;inset:0;background:rgba(0,0,0,.85);
+      display:flex;align-items:center;justify-content:center;
+      z-index:9000;padding:1rem;
+    }
+    .setup-box{
+      background:var(--card);border:2px solid var(--accent);
+      border-radius:var(--radius);padding:2rem;max-width:550px;
+      width:100%;max-height:90vh;overflow-y:auto;
+    }
+    .setup-box h2{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--accent);margin-bottom:1rem}
+    .setup-box p,.setup-box li{font-size:.85rem;color:var(--muted);line-height:1.7;margin-bottom:.5rem}
+    .setup-box ol{padding-left:1.25rem}
+    .setup-box code{
+      background:var(--bg);color:var(--accent2);
+      padding:.15rem .4rem;border-radius:4px;font-size:.8rem;
+    }
+    .setup-box .btn-primary{margin-top:1rem}
+    .config-fields{margin:1rem 0}
+    .config-fields input{
+      width:100%;background:var(--bg);border:1px solid var(--border);
+      color:var(--text);padding:.55rem .9rem;border-radius:8px;
+      font-size:.8rem;outline:none;margin-bottom:.5rem;
+    }
+    .config-fields input:focus{border-color:var(--accent)}
+
+    @media(max-width:640px){
+      .groups-grid{grid-template-columns:1fr;padding:0 .75rem}
+      nav{padding:.6rem .75rem}
+      .section-title,.knockout-info,.leaderboard{padding-left:.75rem;padding-right:.75rem}
+      .leaderboard{padding-left:.75rem;padding-right:.75rem}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── FIREBASE SETUP MODAL ── -->
+<div id="setup-modal" style="display:none">
+  <div class="setup-box">
+    <h2>⚙️ Configurar Firebase</h2>
+    <p>Para que los datos se guarden en la nube necesitás crear un proyecto <strong>gratuito</strong> en Firebase. Solo toma 5 minutos:</p>
+    <ol>
+      <li>Andá a <strong>console.firebase.google.com</strong> e iniciá sesión con Google.</li>
+      <li>Hacé clic en <strong>"Agregar proyecto"</strong>, dale un nombre (ej: <code>mundial-familia</code>) y seguí los pasos.</li>
+      <li>En el panel del proyecto, hacé clic en el ícono <strong>&lt;/&gt;</strong> (Web) para agregar una app web.</li>
+      <li>Copiá el objeto <code>firebaseConfig</code> que te aparece.</li>
+      <li>Andá a <strong>Firestore Database → Crear base de datos → Modo de prueba</strong>.</li>
+      <li>Pegá los valores abajo y hacé clic en "Guardar y continuar".</li>
+    </ol>
+    <div class="config-fields">
+      <input id="cfg-apiKey"    placeholder="apiKey" />
+      <input id="cfg-authDomain" placeholder="authDomain" />
+      <input id="cfg-projectId" placeholder="projectId" />
+      <input id="cfg-appId"     placeholder="appId" />
+    </div>
+    <button class="btn-primary" onclick="saveConfig()">Guardar y continuar</button>
+    <p style="margin-top:.75rem;font-size:.75rem">
+      Los datos se guardan solo en tu navegador (localStorage) para que no tengas que ingresarlos de nuevo.
+    </p>
+  </div>
+</div>
+
+<!-- ── NAV ── -->
+<nav id="main-nav" style="display:none">
+  <div class="nav-logo">🏆 Familia Rodríguez</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('grupos')">Grupos</button>
+    <button class="nav-tab" onclick="switchTab('eliminatorias')">Eliminatorias</button>
+    <button class="nav-tab" onclick="switchTab('posiciones')">Posiciones</button>
+  </div>
+  <div class="nav-user">
+    <span id="nav-username">-</span>
+    <button class="btn-logout" onclick="logout()">Salir</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero" id="main-hero" style="display:none">
+  <div class="hero-title">MUNDIAL <span>2026</span></div>
+  <div class="hero-sub">Fixture Familia Rodríguez</div>
+  <div class="hero-badge">USA · CANADÁ · MÉXICO</div>
+</div>
+
+<!-- ── LOGIN ── -->
+<div id="login-screen">
+  <h2>¡Bienvenido!</h2>
+  <p style="font-size:.85rem;color:var(--muted);margin-bottom:1.25rem">
+    Ingresá tu nombre completo para participar en el pronóstico familiar.
+    La próxima vez que entres con el mismo nombre, tus predicciones estarán guardadas.
+  </p>
+  <div class="field">
+    <label>Nombre completo</label>
+    <input id="input-name" placeholder="Ej: Juan Rodríguez" onkeydown="if(event.key==='Enter')login()"/>
+  </div>
+  <button class="btn-primary" onclick="login()">Entrar al fixture →</button>
+  <p class="login-note">Los datos se guardan en la nube. Todos en la familia ven las predicciones de los demás.</p>
+</div>
+
+<!-- ── MAIN APP ── -->
+<div id="app" style="display:none">
+
+  <!-- GRUPOS -->
+  <div id="tab-grupos" class="tab-content active">
+    <div class="section-title">Fase de Grupos</div>
+    <div class="groups-grid" id="groups-grid">
+      <div class="loader"><div class="spinner"></div> Cargando partidos...</div>
+    </div>
+  </div>
+
+  <!-- ELIMINATORIAS -->
+  <div id="tab-eliminatorias" class="tab-content">
+    <div class="section-title">Eliminatorias</div>
+    <div class="knockout-info">
+      <p><strong>Cómo funciona en eliminatorias:</strong><br>
+      Como aún no se conocen los cruces, los pronósticos valen diferente:<br>
+      • <strong>+2 puntos</strong> si acertás el equipo ganador de ese cruce.<br>
+      • <strong>+2 puntos extra</strong> si además acertás el resultado exacto.<br>
+      Los pronósticos se habilitan a medida que se conozcan los cruces.</p>
+    </div>
+    <div class="groups-grid" id="knockout-grid">
+      <div class="loader"><div class="spinner"></div> Cargando eliminatorias...</div>
+    </div>
+  </div>
+
+  <!-- POSICIONES -->
+  <div id="tab-posiciones" class="tab-content">
+    <div class="section-title">Tabla de Posiciones</div>
+    <div class="leaderboard" id="leaderboard">
+      <div class="loader"><div class="spinner"></div> Cargando...</div>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  DATA – Mundial 2026 – Grupos (imagen adjunta)
+// ════════════════════════════════════════════════════════════
+const GROUPS = {
+  A:["México","Sudáfrica","Corea del Sur","Rep. Checa"],
+  B:["Canadá","Bosnia","Catar","Suiza"],
+  C:["Brasil","Marruecos","Haití","Escocia"],
+  D:["Estados Unidos","Paraguay","Australia","Turquía"],
+  E:["Alemania","Curazao","Costa de Marfil","Ecuador"],
+  F:["Países Bajos","Japón","Suecia","Túnez"],
+  G:["Bélgica","Egipto","Irán","Nueva Zelanda"],
+  H:["España","Cabo Verde","Arabia Saudita","Uruguay"],
+  I:["Francia","Senegal","Irak","Noruega"],
+  J:["Argentina","Argelia","Austria","Jordania"],
+  K:["Portugal","RD Congo","Uzbekistán","Colombia"],
+  L:["Inglaterra","Croacia","Ghana","Panamá"],
+};
+
+const FLAGS = {
+  "México":"🇲🇽","Sudáfrica":"🇿🇦","Corea del Sur":"🇰🇷","Rep. Checa":"🇨🇿",
+  "Canadá":"🇨🇦","Bosnia":"🇧🇦","Catar":"🇶🇦","Suiza":"🇨🇭",
+  "Brasil":"🇧🇷","Marruecos":"🇲🇦","Haití":"🇭🇹","Escocia":"🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  "Estados Unidos":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Turquía":"🇹🇷",
+  "Alemania":"🇩🇪","Curazao":"🇨🇼","Costa de Marfil":"🇨🇮","Ecuador":"🇪🇨",
+  "Países Bajos":"🇳🇱","Japón":"🇯🇵","Suecia":"🇸🇪","Túnez":"🇹🇳",
+  "Bélgica":"🇧🇪","Egipto":"🇪🇬","Irán":"🇮🇷","Nueva Zelanda":"🇳🇿",
+  "España":"🇪🇸","Cabo Verde":"🇨🇻","Arabia Saudita":"🇸🇦","Uruguay":"🇺🇾",
+  "Francia":"🇫🇷","Senegal":"🇸🇳","Irak":"🇮🇶","Noruega":"🇳🇴",
+  "Argentina":"🇦🇷","Argelia":"🇩🇿","Austria":"🇦🇹","Jordania":"🇯🇴",
+  "Portugal":"🇵🇹","RD Congo":"🇨🇩","Uzbekistán":"🇺🇿","Colombia":"🇨🇴",
+  "Inglaterra":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croacia":"🇭🇷","Ghana":"🇬🇭","Panamá":"🇵🇦",
+};
+
+// Generar todos los partidos de grupos con fechas/horas
+function generateGroupMatches(){
+  const matches=[];
+  // Fechas por jornada (aproximadas, Mundial 2026 arranca 11 jun 2026)
+  const dates = {
+    1: "2026-06-11", 2:"2026-06-12", 3:"2026-06-13", 4:"2026-06-14",
+    5:"2026-06-15",  6:"2026-06-16", 7:"2026-06-17", 8:"2026-06-18",
+    9:"2026-06-19", 10:"2026-06-20",11:"2026-06-21",12:"2026-06-22",
+    13:"2026-06-23",14:"2026-06-24",15:"2026-06-25",16:"2026-06-26",
+    17:"2026-06-27",18:"2026-06-28",19:"2026-06-29",20:"2026-06-30",
+    21:"2026-07-01",22:"2026-07-02",23:"2026-07-03",24:"2026-07-04",
+  };
+  let day=1;
+  let matchId=1;
+  Object.entries(GROUPS).forEach(([grp,teams])=>{
+    // 6 partidos por grupo
+    const pairs=[[0,1],[2,3],[0,2],[1,3],[0,3],[1,2]];
+    const time = ["18:00","21:00","18:00","21:00","18:00","21:00"];
+    pairs.forEach(([a,b],idx)=>{
+      matches.push({
+        id:`G${matchId}`,
+        type:"group",
+        group:grp,
+        home:teams[a],
+        away:teams[b],
+        datetime:`${dates[day]}T${time[idx]}:00`,
+        pointsWinner:3,
+        pointsExact:1,
+      });
+      matchId++;
+    });
+    day+=2;
+  });
+  return matches;
+}
+
+// Eliminatorias (los cruces aún son TBD)
+const KNOCKOUT_MATCHES = [
+  // Octavos
+  {id:"R32_1",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-04T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_2",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-05T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_3",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-05T21:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_4",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-06T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_5",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-06T21:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_6",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-07T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_7",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-07T21:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_8",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-08T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_9",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-08T21:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_10",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-09T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_11",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-09T21:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_12",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-10T18:00:00",pointsWinner:2,pointsExact:2},
+  // Cuartos
+  {id:"QF_1",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-11T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_2",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-11T21:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_3",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-12T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_4",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-12T21:00:00",pointsWinner:2,pointsExact:2},
+  // Semis
+  {id:"SF_1",type:"knockout",round:"Semifinal",home:"TBD",away:"TBD",datetime:"2026-07-14T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"SF_2",type:"knockout",round:"Semifinal",home:"TBD",away:"TBD",datetime:"2026-07-15T18:00:00",pointsWinner:2,pointsExact:2},
+  // Final
+  {id:"FINAL",type:"knockout",round:"Final",home:"TBD",away:"TBD",datetime:"2026-07-19T18:00:00",pointsWinner:2,pointsExact:2},
+];
+
+const ALL_GROUP_MATCHES = generateGroupMatches();
+const ALL_MATCHES = [...ALL_GROUP_MATCHES, ...KNOCKOUT_MATCHES];
+
+// ════════════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════════════
+let currentUser = null;   // { id, name }
+let allPredictions = {};  // { matchId: { userId: {home,away} } }
+let allResults = {};      // { matchId: {home,away} } – filled by admin/auto
+let users = {};           // { userId: {name, points} }
+let db, fst;
+
+// ════════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════════
+function f(id){return document.getElementById(id)}
+
+window.addEventListener("firebase-ready",async()=>{
+  db = window.__db;
+  fst = window.__firestore;
+
+  // Check if config is demo
+  const savedCfg = JSON.parse(localStorage.getItem("fb_cfg")||"{}");
+  if(savedCfg.projectId){
+    // reinitialise with saved config
+    // (already done via script tag — user needs to reload after saving)
+  }
+
+  // Check if demo keys
+  if(!db){
+    f("setup-modal").style.display="flex";
+    return;
+  }
+
+  // Try to detect demo projectId
+  try{
+    const testRef = fst.doc(db,"_test","ping");
+    await fst.getDoc(testRef);
+  }catch(e){
+    if(e.code==="permission-denied"||e.message.includes("projectId")){
+      f("setup-modal").style.display="flex";
+      return;
+    }
+  }
+
+  // Check for saved user
+  const saved = localStorage.getItem("mundial_user");
+  if(saved){
+    try{
+      currentUser = JSON.parse(saved);
+      enterApp();
+    }catch(e){}
+  }
+});
+
+// Show setup modal if Firebase never initialized
+setTimeout(()=>{
+  if(!window.__firebaseReady){
+    f("setup-modal").style.display="flex";
+  }
+},3000);
+
+function saveConfig(){
+  const cfg={
+    apiKey:f("cfg-apiKey").value.trim(),
+    authDomain:f("cfg-authDomain").value.trim(),
+    projectId:f("cfg-projectId").value.trim(),
+    appId:f("cfg-appId").value.trim(),
+  };
+  if(!cfg.apiKey||!cfg.projectId){
+    toast("Completá al menos apiKey y projectId","error");return;
+  }
+  localStorage.setItem("fb_cfg",JSON.stringify(cfg));
+  // Store in the HTML itself
+  toast("¡Config guardada! Actualizando...");
+  setTimeout(()=>{
+    // Inject config into script and reload
+    // Since we can't rewrite the module, we store and ask user to copy
+    alert(`Perfecto! Ahora necesitás editar el archivo index.html y reemplazar los valores en firebaseConfig con:\n\napiKey: "${cfg.apiKey}"\nauthDomain: "${cfg.authDomain}"\nprojectId: "${cfg.projectId}"\nappId: "${cfg.appId}"\n\nSi lo estás usando en GitHub Pages u hosting, editá el archivo directamente.\n\nSi querés una versión que no requiera edición, contactá al desarrollador.`);
+  },500);
+}
+
+// ════════════════════════════════════════════════════════════
+//  AUTH
+// ════════════════════════════════════════════════════════════
+async function login(){
+  const name = f("input-name").value.trim();
+  if(!name){toast("Ingresá tu nombre","error");return;}
+
+  // Create userId from name (slug)
+  const id = name.toLowerCase().replace(/\s+/g,"_").replace(/[^a-z0-9_]/g,"");
+  currentUser = {id, name};
+
+  // Save to Firestore
+  try{
+    const uRef = fst.doc(db,"users",id);
+    const snap = await fst.getDoc(uRef);
+    if(!snap.exists()){
+      await fst.setDoc(uRef,{name, points:0, created:Date.now()});
+    }
+    localStorage.setItem("mundial_user",JSON.stringify(currentUser));
+    enterApp();
+  }catch(e){
+    console.error(e);
+    // Fallback offline
+    localStorage.setItem("mundial_user",JSON.stringify(currentUser));
+    enterApp();
+    toast("Modo offline - los datos se sincronizarán cuando tengas conexión","error");
+  }
+}
+
+function logout(){
+  localStorage.removeItem("mundial_user");
+  currentUser=null;
+  f("login-screen").style.display="block";
+  f("app").style.display="none";
+  f("main-nav").style.display="none";
+  f("main-hero").style.display="none";
+}
+
+// ════════════════════════════════════════════════════════════
+//  ENTER APP
+// ════════════════════════════════════════════════════════════
+async function enterApp(){
+  f("login-screen").style.display="none";
+  f("app").style.display="block";
+  f("main-nav").style.display="flex";
+  f("main-hero").style.display="block";
+  f("nav-username").textContent = currentUser.name;
+
+  await loadAll();
+  listenRealtime();
+}
+
+async function loadAll(){
+  try{
+    // Load results
+    const resSnap = await fst.getDoc(fst.doc(db,"results","all"));
+    if(resSnap.exists()) allResults = resSnap.data()||{};
+
+    // Load predictions
+    const predSnap = await fst.getDocs(fst.collection(db,"predictions"));
+    predSnap.forEach(d=>{allPredictions[d.id]=d.data();});
+
+    // Load users
+    const usrSnap = await fst.getDocs(fst.collection(db,"users"));
+    usrSnap.forEach(d=>{users[d.id]=d.data();});
+
+  }catch(e){console.error("loadAll",e)}
+
+  renderGroups();
+  renderKnockout();
+  renderLeaderboard();
+}
+
+function listenRealtime(){
+  // Listen for results changes
+  fst.onSnapshot(fst.doc(db,"results","all"),snap=>{
+    if(snap.exists()){
+      allResults = snap.data()||{};
+      renderGroups();
+      renderKnockout();
+    }
+  });
+  // Listen for predictions
+  fst.onSnapshot(fst.collection(db,"predictions"),snap=>{
+    snap.forEach(d=>{allPredictions[d.id]=d.data();});
+    renderGroups();
+    renderKnockout();
+    renderLeaderboard();
+  });
+  // Listen for users (leaderboard)
+  fst.onSnapshot(fst.collection(db,"users"),snap=>{
+    snap.forEach(d=>{users[d.id]=d.data();});
+    renderLeaderboard();
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+//  RENDER GROUPS
+// ════════════════════════════════════════════════════════════
+function renderGroups(){
+  const grid = f("groups-grid");
+  grid.innerHTML="";
+
+  Object.entries(GROUPS).forEach(([grp,teams])=>{
+    const card = document.createElement("div");
+    card.className="group-card";
+    const matches = ALL_GROUP_MATCHES.filter(m=>m.group===grp);
+    card.innerHTML=`<div class="group-header">GRUPO ${grp}</div><div class="group-matches">${matches.map(m=>renderMatch(m)).join("")}</div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+//  RENDER KNOCKOUT
+// ════════════════════════════════════════════════════════════
+function renderKnockout(){
+  const grid = f("knockout-grid");
+  grid.innerHTML="";
+  const rounds=["Octavos de Final","Cuartos de Final","Semifinal","Final"];
+  rounds.forEach(round=>{
+    const matches = KNOCKOUT_MATCHES.filter(m=>m.round===round);
+    const card = document.createElement("div");
+    card.className="group-card";
+    card.innerHTML=`<div class="group-header">${round}</div><div class="group-matches">${matches.map(m=>renderMatch(m)).join("")}</div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+//  RENDER SINGLE MATCH
+// ════════════════════════════════════════════════════════════
+function renderMatch(m){
+  const now = Date.now();
+  const matchTime = new Date(m.datetime).getTime();
+  const locked = now >= matchTime;
+  const isTBD = m.home==="TBD"||m.away==="TBD";
+
+  const result = allResults[m.id]||null;
+  const myPred = (allPredictions[m.id]||{})[currentUser?.id]||null;
+
+  const fmtDate = new Date(m.datetime).toLocaleString("es-AR",{
+    weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"
+  });
+
+  const flagH = FLAGS[m.home]||"🏴";
+  const flagA = FLAGS[m.away]||"🏴";
+
+  // Points badge
+  let badge="";
+  if(result && myPred){
+    const pts = calcPoints(m, result, myPred);
+    if(pts>0) badge=`<span class="match-result-badge">${pts > (m.type==="group"?3:2) ? "✨":"⭐"} +${pts} pts</span>`;
+    else if(pts===0) badge=`<span class="match-result-badge lost">0 pts</span>`;
+  }
+
+  // Other predictions summary
+  let predsHtml="";
+  if(result){
+    const mp = allPredictions[m.id]||{};
+    const rows = Object.entries(mp).filter(([uid])=>uid!==currentUser?.id).map(([uid,p])=>{
+      const uname = (users[uid]||{}).name||uid;
+      const pts = calcPoints(m,result,p);
+      return `<div class="pred-row"><span class="pred-name">${uname}</span><span class="pred-score">${p.home}-${p.away} <b style="color:var(--green)">+${pts}</b></span></div>`;
+    });
+    if(rows.length) predsHtml=`<div class="predictions-summary">${rows.join("")}</div>`;
+  }
+
+  const disabledAttr = (locked||isTBD)?"disabled":"";
+
+  return `
+  <div class="match-card" id="mc-${m.id}">
+    <div class="match-meta">${fmtDate}${result?` · <b style="color:var(--green)">Resultado: ${result.home}-${result.away}</b>`:""}</div>
+    <div class="match-teams">
+      <span class="match-team">${flagH} ${m.home}</span>
+      <span class="match-vs">vs</span>
+      <span class="match-team right">${m.away} ${flagA}</span>
+    </div>
+    ${!isTBD?`
+    <div class="match-score-inputs">
+      <input class="score-input" type="number" min="0" max="20" id="ph-${m.id}"
+        value="${myPred?myPred.home:""}" placeholder="?" ${disabledAttr} />
+      <span class="score-dash">–</span>
+      <input class="score-input" type="number" min="0" max="20" id="pa-${m.id}"
+        value="${myPred?myPred.away:""}" placeholder="?" ${disabledAttr} />
+    </div>
+    ${locked
+      ? `<div class="match-locked">🔒 Partido iniciado – pronóstico cerrado</div>`
+      : `<button class="btn-save-match" onclick="savePred('${m.id}')">Guardar pronóstico</button>`
+    }
+    ${badge}
+    ${predsHtml}
+    `:`<div class="match-locked" style="margin-top:.5rem">⏳ Cruce por confirmarse</div>`}
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+//  SAVE PREDICTION
+// ════════════════════════════════════════════════════════════
+async function savePred(matchId){
+  const hEl=f(`ph-${matchId}`), aEl=f(`pa-${matchId}`);
+  if(!hEl||!aEl){return;}
+  const h=parseInt(hEl.value), a=parseInt(aEl.value);
+  if(isNaN(h)||isNaN(a)||h<0||a<0){toast("Ingresá un resultado válido","error");return;}
+
+  const match = ALL_MATCHES.find(m=>m.id===matchId);
+  if(!match) return;
+  const now=Date.now(), matchTime=new Date(match.datetime).getTime();
+  if(now>=matchTime){toast("Partido ya iniciado, no se puede modificar","error");return;}
+
+  try{
+    const ref = fst.doc(db,"predictions",matchId);
+    const snap = await fst.getDoc(ref);
+    const data = snap.exists()?snap.data():{};
+    data[currentUser.id]={home:h,away:a,savedAt:Date.now()};
+    await fst.setDoc(ref,data);
+    allPredictions[matchId]=data;
+    toast("✅ Pronóstico guardado");
+    // Recalculate and save points
+    await recalcUserPoints();
+    renderGroups();
+    renderKnockout();
+  }catch(e){
+    console.error(e);
+    toast("Error al guardar","error");
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+//  POINTS CALC
+// ════════════════════════════════════════════════════════════
+function calcPoints(match, result, pred){
+  if(!result||!pred) return 0;
+  const rh=parseInt(result.home), ra=parseInt(result.away);
+  const ph=parseInt(pred.home), pa=parseInt(pred.away);
+
+  // Exact score
+  if(rh===ph && ra===pa) return match.pointsWinner + match.pointsExact;
+
+  // Just winner
+  const rWinner = rh>ra?1:ra>rh?-1:0;
+  const pWinner = ph>pa?1:pa>ph?-1:0;
+  if(rWinner===pWinner) return match.pointsWinner;
+
+  return 0;
+}
+
+async function recalcUserPoints(){
+  const pts={};
+  // For every user
+  Object.keys(users).forEach(uid=>{pts[uid]=0;});
+
+  // For every match that has a result
+  Object.entries(allResults).forEach(([mid,result])=>{
+    const match = ALL_MATCHES.find(m=>m.id===mid);
+    if(!match) return;
+    const mp = allPredictions[mid]||{};
+    Object.entries(mp).forEach(([uid,pred])=>{
+      pts[uid]=(pts[uid]||0)+calcPoints(match,result,pred);
+    });
+  });
+
+  // Save to firestore
+  const writes = Object.entries(pts).map(([uid,p])=>{
+    if(!users[uid]) return null;
+    return fst.updateDoc(fst.doc(db,"users",uid),{points:p});
+  }).filter(Boolean);
+  await Promise.all(writes);
+
+  // Update local
+  Object.entries(pts).forEach(([uid,p])=>{if(users[uid]) users[uid].points=p;});
+  renderLeaderboard();
+}
+
+// ════════════════════════════════════════════════════════════
+//  LEADERBOARD
+// ════════════════════════════════════════════════════════════
+function renderLeaderboard(){
+  const lb=f("leaderboard");
+  lb.innerHTML="";
+  const sorted=Object.entries(users).sort((a,b)=>(b[1].points||0)-(a[1].points||0));
+  if(!sorted.length){lb.innerHTML='<div class="loader">Sin participantes aún</div>';return;}
+
+  sorted.forEach(([uid,u],i)=>{
+    const rank=i+1;
+    const rankClass=rank===1?"top1":rank===2?"top2":rank===3?"top3":"";
+    const isMe=uid===currentUser?.id?"me":"";
+    lb.innerHTML+=`
+    <div class="lb-row ${isMe}">
+      <div class="lb-rank ${rankClass}">${rank}</div>
+      <div>
+        <div class="lb-name">${u.name||uid} ${isMe?"(vos)":""}</div>
+      </div>
+      <div class="lb-pts">${u.points||0} <span style="font-size:.7rem;font-weight:400;color:var(--muted)">pts</span></div>
+    </div>`;
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+//  TABS
+// ════════════════════════════════════════════════════════════
+function switchTab(tab){
+  document.querySelectorAll(".tab-content").forEach(el=>el.classList.remove("active"));
+  document.querySelectorAll(".nav-tab").forEach(el=>el.classList.remove("active"));
+  f(`tab-${tab}`).classList.add("active");
+  event.target.classList.add("active");
+}
+
+// ════════════════════════════════════════════════════════════
+//  TOAST
+// ════════════════════════════════════════════════════════════
+let toastTimer;
+function toast(msg,type=""){
+  const t=f("toast");
+  t.textContent=msg;
+  t.className="show"+(type?" "+type:"");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{t.className="";},3000);
+}
+</script>
+
+<!-- ════════════════════════════════════════════════════════
+  INSTRUCCIONES DE CONFIGURACIÓN (leer antes de publicar)
+  ═══════════════════════════════════════════════════════════
+  1. Crear proyecto en https://console.firebase.google.com
+  2. "Agregar proyecto" → nombre (ej: mundial-familia) → continuar
+  3. En el panel: ícono </> (Web app) → registrar → copiar firebaseConfig
+  4. Firestore Database → Crear base de datos → "Modo de prueba"
+  5. En las reglas de Firestore pegar:
+       rules_version = '2';
+       service cloud.firestore {
+         match /databases/{database}/documents {
+           match /{document=**} {
+             allow read, write: if true;
+           }
+         }
+       }
+  6. Reemplazar los valores en firebaseConfig al inicio de este archivo
+  7. Publicar en GitHub Pages (gratis):
+     - Crear repo público en github.com
+     - Subir index.html
+     - Settings → Pages → Source: main branch
+     - Compartir el link https://TU_USUARIO.github.io/REPO/
+  ══════════════════════════════════════════════════════════ -->
+</body>
+</html>

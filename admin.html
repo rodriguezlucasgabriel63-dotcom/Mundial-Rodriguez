@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admin – Mundial 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // ⚠️ MISMO firebaseConfig que index.html
+    apiKey: "AIzaSyCB5PImes4IhoLYSPbO9S6Ku-uIWs8oAG8",
+  authDomain: "mundial-rodriguez.firebaseapp.com",
+  projectId: "mundial-rodriguez",
+  storageBucket: "mundial-rodriguez.firebasestorage.app",
+  messagingSenderId: "966833084311",
+  appId: "1:966833084311:web:6db8275612491073d756d2"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+    window.__db  = db;
+    window.__fst = { doc, setDoc, getDoc, collection, getDocs };
+    window.dispatchEvent(new Event("firebase-ready"));
+  </script>
+
+  <style>
+    :root{--bg:#0a0e1a;--surface:#111827;--card:#1a2235;--border:#2a3650;--accent:#f7c948;--green:#22c55e;--red:#ef4444;--text:#e8eaf0;--muted:#6b7280}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;padding:1.5rem}
+    h1{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--accent);margin-bottom:1.5rem}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem}
+    .card h3{font-size:.8rem;color:var(--muted);margin-bottom:.5rem;font-weight:600;letter-spacing:.06em}
+    .match-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+    .match-name{flex:1;font-size:.8rem}
+    input[type=number]{width:44px;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:.35rem;border-radius:6px;text-align:center;font-size:.9rem}
+    button{background:var(--accent);border:none;color:#000;padding:.4rem .9rem;border-radius:6px;font-weight:700;cursor:pointer;font-size:.8rem}
+    button:hover{opacity:.8}
+    .saved{color:var(--green);font-size:.75rem;margin-left:.5rem}
+    #toast{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:.5rem 1.25rem;border-radius:20px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s}
+    #toast.show{opacity:1}
+    .warning{background:rgba(247,201,72,.1);border:1px solid var(--accent);border-radius:8px;padding:1rem;margin-bottom:1.5rem;font-size:.85rem;line-height:1.6}
+  </style>
+</head>
+<body>
+<h1>⚽ Admin – Cargar Resultados</h1>
+<div class="warning">
+  <strong>⚠️ Solo para el administrador (organizador del fixture)</strong><br>
+  Acá podés cargar los resultados reales de los partidos. Una vez guardado, el sistema calcula los puntos automáticamente.
+  Asegurate de usar el mismo Firebase que en el archivo <code>index.html</code>.
+</div>
+<div class="grid" id="admin-grid">Cargando...</div>
+<div id="toast"></div>
+
+<script>
+const GROUPS={A:["México","Sudáfrica","Corea del Sur","Rep. Checa"],B:["Canadá","Bosnia","Catar","Suiza"],C:["Brasil","Marruecos","Haití","Escocia"],D:["Estados Unidos","Paraguay","Australia","Turquía"],E:["Alemania","Curazao","Costa de Marfil","Ecuador"],F:["Países Bajos","Japón","Suecia","Túnez"],G:["Bélgica","Egipto","Irán","Nueva Zelanda"],H:["España","Cabo Verde","Arabia Saudita","Uruguay"],I:["Francia","Senegal","Irak","Noruega"],J:["Argentina","Argelia","Austria","Jordania"],K:["Portugal","RD Congo","Uzbekistán","Colombia"],L:["Inglaterra","Croacia","Ghana","Panamá"]};
+
+function genGroupMatches(){
+  const m=[];const dates={1:"2026-06-11",2:"2026-06-12",3:"2026-06-13",4:"2026-06-14",5:"2026-06-15",6:"2026-06-16",7:"2026-06-17",8:"2026-06-18",9:"2026-06-19",10:"2026-06-20",11:"2026-06-21",12:"2026-06-22",13:"2026-06-23",14:"2026-06-24",15:"2026-06-25",16:"2026-06-26",17:"2026-06-27",18:"2026-06-28",19:"2026-06-29",20:"2026-06-30",21:"2026-07-01",22:"2026-07-02",23:"2026-07-03",24:"2026-07-04"};
+  let day=1,id=1;
+  Object.entries(GROUPS).forEach(([g,t])=>{
+    [[0,1],[2,3],[0,2],[1,3],[0,3],[1,2]].forEach(([a,b],i)=>{
+      m.push({id:`G${id}`,group:g,home:t[a],away:t[b],datetime:`${dates[day]}T${i%2===0?"18:00":"21:00"}:00`});id++;
+    });day+=2;
+  });return m;
+}
+
+const KO=[
+  {id:"R32_1",round:"Octavos",home:"TBD",away:"TBD"},{id:"R32_2",round:"Octavos",home:"TBD",away:"TBD"},
+  {id:"R32_3",round:"Octavos",home:"TBD",away:"TBD"},{id:"R32_4",round:"Octavos",home:"TBD",away:"TBD"},
+  {id:"R32_5",round:"Octavos",home:"TBD",away:"TBD"},{id:"R32_6",round:"Octavos",home:"TBD",away:"TBD"},
+  {id:"R32_7",round:"Octavos",home:"TBD",away:"TBD"},{id:"R32_8",round:"Octavos",home:"TBD",away:"TBD"},
+  {id:"R32_9",round:"Octavos",home:"TBD",away:"TBD"},{id:"R32_10",round:"Octavos",home:"TBD",away:"TBD"},
+  {id:"R32_11",round:"Octavos",home:"TBD",away:"TBD"},{id:"R32_12",round:"Octavos",home:"TBD",away:"TBD"},
+  {id:"QF_1",round:"Cuartos",home:"TBD",away:"TBD"},{id:"QF_2",round:"Cuartos",home:"TBD",away:"TBD"},
+  {id:"QF_3",round:"Cuartos",home:"TBD",away:"TBD"},{id:"QF_4",round:"Cuartos",home:"TBD",away:"TBD"},
+  {id:"SF_1",round:"Semis",home:"TBD",away:"TBD"},{id:"SF_2",round:"Semis",home:"TBD",away:"TBD"},
+  {id:"FINAL",round:"Final",home:"TBD",away:"TBD"},
+];
+
+const ALL=[...genGroupMatches(),...KO];
+let allResults={};
+let db,fst;
+
+window.addEventListener("firebase-ready",async()=>{
+  db=window.__db; fst=window.__fst;
+  const snap=await fst.getDoc(fst.doc(db,"results","all"));
+  if(snap.exists()) allResults=snap.data()||{};
+  render();
+});
+
+function render(){
+  const grid=document.getElementById("admin-grid");
+  const byGroup={};
+  ALL.forEach(m=>{
+    const key=m.group||m.round||"Knockout";
+    if(!byGroup[key]) byGroup[key]=[];
+    byGroup[key].push(m);
+  });
+  grid.innerHTML="";
+  Object.entries(byGroup).forEach(([grp,matches])=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`<h3>GRUPO ${grp}</h3>`;
+    matches.forEach(m=>{
+      const r=allResults[m.id]||{};
+      card.innerHTML+=`
+      <div class="match-row" id="row-${m.id}">
+        <span class="match-name">${m.home} vs ${m.away}</span>
+        <input type="number" id="rh-${m.id}" min="0" max="20" value="${r.home??""}" placeholder="?"/>
+        <span>–</span>
+        <input type="number" id="ra-${m.id}" min="0" max="20" value="${r.away??""}" placeholder="?"/>
+        <button onclick="saveResult('${m.id}')">✔</button>
+        ${r.home!==undefined?`<span class="saved">✓</span>`:""}
+      </div>`;
+    });
+    grid.appendChild(card);
+  });
+}
+
+async function saveResult(mid){
+  const h=parseInt(document.getElementById(`rh-${mid}`).value);
+  const a=parseInt(document.getElementById(`ra-${mid}`).value);
+  if(isNaN(h)||isNaN(a)){alert("Ingresá ambos valores");return;}
+  allResults[mid]={home:h,away:a};
+  await fst.setDoc(fst.doc(db,"results","all"),allResults);
+  // Recalc points
+  await recalcAll();
+  toast("Resultado guardado ✔");
+  render();
+}
+
+async function recalcAll(){
+  const predsSnap=await fst.getDocs(fst.collection(db,"predictions"));
+  const allPreds={};
+  predsSnap.forEach(d=>{allPreds[d.id]=d.data();});
+
+  const usersSnap=await fst.getDocs(fst.collection(db,"users"));
+  const pts={};
+  usersSnap.forEach(d=>{pts[d.id]=0;});
+
+  Object.entries(allResults).forEach(([mid,res])=>{
+    const match=ALL.find(m=>m.id===mid);if(!match)return;
+    const pW=match.pointsWinner||(match.round?2:3);
+    const pE=match.pointsExact||(match.round?2:1);
+    const mp=allPreds[mid]||{};
+    Object.entries(mp).forEach(([uid,pred])=>{
+      const rh=res.home,ra=res.away,ph=pred.home,pa=pred.away;
+      if(rh===ph&&ra===pa){pts[uid]=(pts[uid]||0)+pW+pE;}
+      else{const rw=rh>ra?1:ra>rh?-1:0,pw=ph>pa?1:pa>ph?-1:0;if(rw===pw)pts[uid]=(pts[uid]||0)+pW;}
+    });
+  });
+  await Promise.all(Object.entries(pts).map(([uid,p])=>fst.setDoc(fst.doc(db,"users",uid),{points:p},{merge:true})));
+}
+
+let tt;
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.className="show";clearTimeout(tt);tt=setTimeout(()=>t.className="",3000);}
+</script>
+</body>
+</html>
