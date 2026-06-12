@@ -10,14 +10,14 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // ⚠️ MISMO firebaseConfig que index.html
-    apiKey: "AIzaSyCB5PImes4IhoLYSPbO9S6Ku-uIWs8oAG8",
-  authDomain: "mundial-rodriguez.firebaseapp.com",
-  projectId: "mundial-rodriguez",
-  storageBucket: "mundial-rodriguez.firebasestorage.app",
-  messagingSenderId: "966833084311",
-  appId: "1:966833084311:web:6db8275612491073d756d2"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyCB5PImes4IhoLYSPbO9S6Ku-uIWs8oAG8",
+      authDomain: "mundial-rodriguez.firebaseapp.com",
+      projectId: "mundial-rodriguez",
+      storageBucket: "mundial-rodriguez.firebasestorage.app",
+      messagingSenderId: "966833084311",
+      appId: "1:966833084311:web:6db8275612491073d756d2"
+    };
 
     const app = initializeApp(firebaseConfig);
     const db  = getFirestore(app);
