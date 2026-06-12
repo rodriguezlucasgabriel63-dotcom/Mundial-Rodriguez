@@ -465,65 +465,126 @@ const FLAGS = {
   "Inglaterra":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croacia":"🇭🇷","Ghana":"🇬🇭","Panamá":"🇵🇦",
 };
 
-// Generar todos los partidos de grupos con fechas/horas
+// Partidos de grupos con fechas y horas exactas del fixture oficial
 function generateGroupMatches(){
-  const matches=[];
-  // Fechas por jornada (aproximadas, Mundial 2026 arranca 11 jun 2026)
-  const dates = {
-    1: "2026-06-11", 2:"2026-06-12", 3:"2026-06-13", 4:"2026-06-14",
-    5:"2026-06-15",  6:"2026-06-16", 7:"2026-06-17", 8:"2026-06-18",
-    9:"2026-06-19", 10:"2026-06-20",11:"2026-06-21",12:"2026-06-22",
-    13:"2026-06-23",14:"2026-06-24",15:"2026-06-25",16:"2026-06-26",
-    17:"2026-06-27",18:"2026-06-28",19:"2026-06-29",20:"2026-06-30",
-    21:"2026-07-01",22:"2026-07-02",23:"2026-07-03",24:"2026-07-04",
-  };
-  let day=1;
-  let matchId=1;
-  Object.entries(GROUPS).forEach(([grp,teams])=>{
-    // 6 partidos por grupo
-    const pairs=[[0,1],[2,3],[0,2],[1,3],[0,3],[1,2]];
-    const time = ["18:00","21:00","18:00","21:00","18:00","21:00"];
-    pairs.forEach(([a,b],idx)=>{
-      matches.push({
-        id:`G${matchId}`,
-        type:"group",
-        group:grp,
-        home:teams[a],
-        away:teams[b],
-        datetime:`${dates[day]}T${time[idx]}:00`,
-        pointsWinner:3,
-        pointsExact:1,
-      });
-      matchId++;
-    });
-    day+=2;
-  });
-  return matches;
+  return [
+    // ── GRUPO A: México · Sudáfrica · Corea del Sur · Rep. Checa ──
+    {id:"G1", type:"group",group:"A",home:"México",      away:"Sudáfrica",    datetime:"2026-06-11T16:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G2", type:"group",group:"A",home:"Corea del Sur",away:"Rep. Checa",  datetime:"2026-06-11T22:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G3", type:"group",group:"A",home:"Rep. Checa",  away:"Sudáfrica",    datetime:"2026-06-18T13:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G4", type:"group",group:"A",home:"México",      away:"Corea del Sur",datetime:"2026-06-18T22:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G5", type:"group",group:"A",home:"Sudáfrica",   away:"Corea del Sur",datetime:"2026-06-24T22:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G6", type:"group",group:"A",home:"Rep. Checa",  away:"México",       datetime:"2026-06-24T22:00:00",pointsWinner:3,pointsExact:1},
+    // ── GRUPO B: Canadá · Catar · Suiza · Bosnia ──
+    {id:"G7", type:"group",group:"B",home:"Canadá",      away:"Bosnia",       datetime:"2026-06-12T16:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G8", type:"group",group:"B",home:"Catar",       away:"Suiza",        datetime:"2026-06-13T19:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G9", type:"group",group:"B",home:"Suiza",       away:"Bosnia",       datetime:"2026-06-18T13:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G10",type:"group",group:"B",home:"Canadá",      away:"Catar",        datetime:"2026-06-18T19:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G11",type:"group",group:"B",home:"Bosnia",      away:"Catar",        datetime:"2026-06-24T16:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G12",type:"group",group:"B",home:"Suiza",       away:"Canadá",       datetime:"2026-06-24T16:00:00",pointsWinner:3,pointsExact:1},
+    // ── GRUPO C: Brasil · Marruecos · Escocia · Haití ──
+    {id:"G13",type:"group",group:"C",home:"Brasil",      away:"Marruecos",    datetime:"2026-06-13T13:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G14",type:"group",group:"C",home:"Haití",       away:"Escocia",      datetime:"2026-06-13T22:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G15",type:"group",group:"C",home:"Escocia",     away:"Marruecos",    datetime:"2026-06-19T19:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G16",type:"group",group:"C",home:"Brasil",      away:"Haití",        datetime:"2026-06-19T22:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G17",type:"group",group:"C",home:"Escocia",     away:"Brasil",       datetime:"2026-06-24T19:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G18",type:"group",group:"C",home:"Marruecos",   away:"Haití",        datetime:"2026-06-24T19:00:00",pointsWinner:3,pointsExact:1},
+    // ── GRUPO D: Estados Unidos · Paraguay · Australia · Turquía ──
+    {id:"G19",type:"group",group:"D",home:"Estados Unidos",away:"Paraguay",   datetime:"2026-06-12T22:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G20",type:"group",group:"D",home:"Australia",   away:"Turquía",      datetime:"2026-06-14T01:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G21",type:"group",group:"D",home:"Turquía",     away:"Paraguay",     datetime:"2026-06-19T13:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G22",type:"group",group:"D",home:"Estados Unidos",away:"Australia",  datetime:"2026-06-20T00:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G23",type:"group",group:"D",home:"Paraguay",    away:"Australia",    datetime:"2026-06-25T23:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G24",type:"group",group:"D",home:"Turquía",     away:"Estados Unidos",datetime:"2026-06-25T23:00:00",pointsWinner:3,pointsExact:1},
+    // ── GRUPO E: Alemania · Curazao · Costa de Marfil · Ecuador ──
+    {id:"G25",type:"group",group:"E",home:"Alemania",    away:"Curazao",      datetime:"2026-06-14T14:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G26",type:"group",group:"E",home:"Ecuador",     away:"Costa de Marfil",datetime:"2026-06-14T20:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G27",type:"group",group:"E",home:"Alemania",    away:"Costa de Marfil",datetime:"2026-06-20T17:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G28",type:"group",group:"E",home:"Ecuador",     away:"Curazao",      datetime:"2026-06-20T21:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G29",type:"group",group:"E",home:"Costa de Marfil",away:"Curazao",   datetime:"2026-06-25T17:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G30",type:"group",group:"E",home:"Ecuador",     away:"Alemania",     datetime:"2026-06-25T17:00:00",pointsWinner:3,pointsExact:1},
+    // ── GRUPO F: Países Bajos · Japón · Túnez · Suecia ──
+    {id:"G31",type:"group",group:"F",home:"Países Bajos",away:"Japón",        datetime:"2026-06-14T17:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G32",type:"group",group:"F",home:"Suecia",      away:"Túnez",        datetime:"2026-06-14T23:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G33",type:"group",group:"F",home:"Países Bajos",away:"Suecia",       datetime:"2026-06-20T14:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G34",type:"group",group:"F",home:"Túnez",       away:"Japón",        datetime:"2026-06-21T01:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G35",type:"group",group:"F",home:"Japón",       away:"Suecia",       datetime:"2026-06-25T20:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G36",type:"group",group:"F",home:"Túnez",       away:"Países Bajos", datetime:"2026-06-25T20:00:00",pointsWinner:3,pointsExact:1},
+    // ── GRUPO G: Bélgica · Irán · Egipto · Nueva Zelanda ──
+    {id:"G37",type:"group",group:"G",home:"Bélgica",     away:"Egipto",       datetime:"2026-06-15T16:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G38",type:"group",group:"G",home:"Irán",        away:"Nueva Zelanda",datetime:"2026-06-15T22:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G39",type:"group",group:"G",home:"Bélgica",     away:"Irán",         datetime:"2026-06-21T16:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G40",type:"group",group:"G",home:"Nueva Zelanda",away:"Egipto",      datetime:"2026-06-21T22:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G41",type:"group",group:"G",home:"Nueva Zelanda",away:"Bélgica",     datetime:"2026-06-27T00:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G42",type:"group",group:"G",home:"Egipto",      away:"Irán",         datetime:"2026-06-27T00:00:00",pointsWinner:3,pointsExact:1},
+    // ── GRUPO H: España · Uruguay · Arabia Saudita · Cabo Verde ──
+    {id:"G43",type:"group",group:"H",home:"España",      away:"Cabo Verde",   datetime:"2026-06-15T13:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G44",type:"group",group:"H",home:"Arabia Saudita",away:"Uruguay",    datetime:"2026-06-15T19:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G45",type:"group",group:"H",home:"España",      away:"Arabia Saudita",datetime:"2026-06-21T13:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G46",type:"group",group:"H",home:"Uruguay",     away:"Cabo Verde",   datetime:"2026-06-21T19:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G47",type:"group",group:"H",home:"Cabo Verde",  away:"Arabia Saudita",datetime:"2026-06-26T21:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G48",type:"group",group:"H",home:"Uruguay",     away:"España",       datetime:"2026-06-26T21:00:00",pointsWinner:3,pointsExact:1},
+    // ── GRUPO I: Francia · Senegal · Irak · Noruega ──
+    {id:"G49",type:"group",group:"I",home:"Francia",     away:"Senegal",      datetime:"2026-06-16T16:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G50",type:"group",group:"I",home:"Irak",        away:"Noruega",      datetime:"2026-06-16T22:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G51",type:"group",group:"I",home:"Francia",     away:"Irak",         datetime:"2026-06-22T18:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G52",type:"group",group:"I",home:"Noruega",     away:"Senegal",      datetime:"2026-06-22T21:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G53",type:"group",group:"I",home:"Senegal",     away:"Irak",         datetime:"2026-06-26T16:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G54",type:"group",group:"I",home:"Noruega",     away:"Francia",      datetime:"2026-06-26T16:00:00",pointsWinner:3,pointsExact:1},
+    // ── GRUPO J: Argentina · Argelia · Austria · Jordania ──
+    {id:"G55",type:"group",group:"J",home:"Argentina",   away:"Argelia",      datetime:"2026-06-16T22:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G56",type:"group",group:"J",home:"Austria",     away:"Jordania",     datetime:"2026-06-17T01:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G57",type:"group",group:"J",home:"Argentina",   away:"Austria",      datetime:"2026-06-22T14:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G58",type:"group",group:"J",home:"Jordania",    away:"Argelia",      datetime:"2026-06-23T00:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G59",type:"group",group:"J",home:"Argelia",     away:"Austria",      datetime:"2026-06-27T23:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G60",type:"group",group:"J",home:"Jordania",    away:"Argentina",    datetime:"2026-06-27T23:00:00",pointsWinner:3,pointsExact:1},
+    // ── GRUPO K: Portugal · Colombia · Uzbekistán · RD Congo ──
+    {id:"G61",type:"group",group:"K",home:"Portugal",    away:"RD Congo",     datetime:"2026-06-17T14:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G62",type:"group",group:"K",home:"Uzbekistán",  away:"Colombia",     datetime:"2026-06-17T23:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G63",type:"group",group:"K",home:"Portugal",    away:"Uzbekistán",   datetime:"2026-06-23T14:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G64",type:"group",group:"K",home:"Colombia",    away:"RD Congo",     datetime:"2026-06-23T14:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G65",type:"group",group:"K",home:"Colombia",    away:"Portugal",     datetime:"2026-06-27T23:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G66",type:"group",group:"K",home:"RD Congo",    away:"Uzbekistán",   datetime:"2026-06-27T20:00:00",pointsWinner:3,pointsExact:1},
+    // ── GRUPO L: Inglaterra · Croacia · Ghana · Panamá ──
+    {id:"G67",type:"group",group:"L",home:"Inglaterra",  away:"Croacia",      datetime:"2026-06-17T17:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G68",type:"group",group:"L",home:"Ghana",       away:"Panamá",       datetime:"2026-06-17T20:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G69",type:"group",group:"L",home:"Inglaterra",  away:"Ghana",        datetime:"2026-06-23T17:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G70",type:"group",group:"L",home:"Panamá",      away:"Croacia",      datetime:"2026-06-23T20:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G71",type:"group",group:"L",home:"Croacia",     away:"Ghana",        datetime:"2026-06-27T18:00:00",pointsWinner:3,pointsExact:1},
+    {id:"G72",type:"group",group:"L",home:"Panamá",      away:"Inglaterra",   datetime:"2026-06-27T18:00:00",pointsWinner:3,pointsExact:1},
+  ];
 }
 
 // Eliminatorias (los cruces aún son TBD)
 const KNOCKOUT_MATCHES = [
+  // Dieciseisavos
+  {id:"R32_1", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-06-28T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_2", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-06-29T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_3", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-06-29T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_4", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-06-30T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_5", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-06-30T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_6", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-01T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_7", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-01T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_8", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-02T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_9", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-02T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_10",type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-03T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_11",type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-03T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_12",type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-04T18:00:00",pointsWinner:2,pointsExact:2},
   // Octavos
-  {id:"R32_1",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-04T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_2",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-05T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_3",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-05T21:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_4",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-06T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_5",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-06T21:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_6",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-07T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_7",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-07T21:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_8",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-08T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_9",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-08T21:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_10",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-09T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_11",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-09T21:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_12",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-10T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_1",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-04T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_2",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-05T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_3",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-05T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_4",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-06T18:00:00",pointsWinner:2,pointsExact:2},
   // Cuartos
-  {id:"QF_1",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-11T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"QF_2",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-11T21:00:00",pointsWinner:2,pointsExact:2},
-  {id:"QF_3",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-12T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"QF_4",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-12T21:00:00",pointsWinner:2,pointsExact:2},
+  {id:"SF_1",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-09T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"SF_2",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-10T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"SF_3",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-10T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"SF_4",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-11T18:00:00",pointsWinner:2,pointsExact:2},
   // Semis
-  {id:"SF_1",type:"knockout",round:"Semifinal",home:"TBD",away:"TBD",datetime:"2026-07-14T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"SF_2",type:"knockout",round:"Semifinal",home:"TBD",away:"TBD",datetime:"2026-07-15T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"SEMI_1",type:"knockout",round:"Semifinal",home:"TBD",away:"TBD",datetime:"2026-07-14T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"SEMI_2",type:"knockout",round:"Semifinal",home:"TBD",away:"TBD",datetime:"2026-07-15T22:00:00",pointsWinner:2,pointsExact:2},
+  // Tercer puesto
+  {id:"THIRD",type:"knockout",round:"Tercer y Cuarto Puesto",home:"TBD",away:"TBD",datetime:"2026-07-18T22:00:00",pointsWinner:2,pointsExact:2},
   // Final
   {id:"FINAL",type:"knockout",round:"Final",home:"TBD",away:"TBD",datetime:"2026-07-19T18:00:00",pointsWinner:2,pointsExact:2},
 ];
