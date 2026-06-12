@@ -14,23 +14,14 @@
     // ─── FIREBASE CONFIG ────────────────────────────────────────────────────
     // IMPORTANTE: Reemplaza estos valores con tu propio proyecto Firebase.
     // Instrucciones al final del archivo HTML.
-    // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCB5PImes4IhoLYSPbO9S6Ku-uIWs8oAG8",
-  authDomain: "mundial-rodriguez.firebaseapp.com",
-  projectId: "mundial-rodriguez",
-  storageBucket: "mundial-rodriguez.firebasestorage.app",
-  messagingSenderId: "966833084311",
-  appId: "1:966833084311:web:6db8275612491073d756d2"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+    const firebaseConfig = {
+      apiKey: "AIzaSyCB5PImes4IhoLYSPbO9S6Ku-uIWs8oAG8",
+      authDomain: "mundial-rodriguez.firebaseapp.com",
+      projectId: "mundial-rodriguez",
+      storageBucket: "mundial-rodriguez.firebasestorage.app",
+      messagingSenderId: "966833084311",
+      appId: "1:966833084311:web:6db8275612491073d756d2"
+    };
 
     const app = initializeApp(firebaseConfig);
     const db  = getFirestore(app);
