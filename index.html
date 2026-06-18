@@ -282,6 +282,39 @@
     #toast.show{opacity:1}
     #toast.error{background:var(--red)}
 
+    /* ── TABLA DE GRUPOS ── */
+    .standing-card{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:var(--radius);overflow:hidden;
+    }
+    .standing-header{
+      background:var(--accent);color:#000;
+      font-family:'Bebas Neue',sans-serif;
+      font-size:1rem;letter-spacing:.08em;
+      padding:.45rem 1rem;
+    }
+    .standing-table{width:100%;border-collapse:collapse;font-size:.8rem}
+    .standing-table th{
+      background:var(--surface);color:var(--muted);
+      padding:.4rem .6rem;text-align:center;
+      font-size:.7rem;font-weight:600;letter-spacing:.05em;
+      border-bottom:1px solid var(--border);
+    }
+    .standing-table th.left{text-align:left}
+    .standing-table td{
+      padding:.5rem .6rem;text-align:center;
+      border-bottom:1px solid rgba(255,255,255,.04);
+    }
+    .standing-table td.left{text-align:left;font-weight:600}
+    .standing-table tr:last-child td{border-bottom:none}
+    .standing-table tr.qualified td{background:rgba(34,197,94,.06)}
+    .standing-table tr.eliminated td{background:rgba(239,68,68,.06)}
+    .standing-rank{
+      color:var(--muted);font-size:.75rem;width:1.5rem;
+    }
+    .pts-cell{font-weight:700;color:var(--accent);font-family:'Bebas Neue',sans-serif;font-size:1rem}
+    .flag-name{display:flex;align-items:center;gap:.35rem}
+
     /* ── LOADER ── */
     .loader{
       display:flex;align-items:center;justify-content:center;
@@ -362,6 +395,7 @@
   <div class="nav-logo">🏆 Familia Rodríguez</div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="switchTab('grupos')">Grupos</button>
+    <button class="nav-tab" onclick="switchTab('tablagrupos')">Tabla de Grupos</button>
     <button class="nav-tab" onclick="switchTab('eliminatorias')">Eliminatorias</button>
     <button class="nav-tab" onclick="switchTab('posiciones')">Posiciones</button>
   </div>
@@ -401,6 +435,14 @@
     <div class="section-title">Fase de Grupos</div>
     <div class="groups-grid" id="groups-grid">
       <div class="loader"><div class="spinner"></div> Cargando partidos...</div>
+    </div>
+  </div>
+
+  <!-- TABLA DE GRUPOS -->
+  <div id="tab-tablagrupos" class="tab-content">
+    <div class="section-title">Tabla de Grupos</div>
+    <div class="groups-grid" id="tabla-grupos-grid">
+      <div class="loader"><div class="spinner"></div> Calculando posiciones...</div>
     </div>
   </div>
 
@@ -741,6 +783,7 @@ async function loadAll(){
 
   renderGroups();
   renderKnockout();
+  renderTablaGrupos();
   renderLeaderboard();
 }
 
@@ -751,6 +794,7 @@ function listenRealtime(){
       allResults = snap.data()||{};
       renderGroups();
       renderKnockout();
+      renderTablaGrupos();
     }
   });
   // Listen for predictions
@@ -770,6 +814,94 @@ function listenRealtime(){
 // ════════════════════════════════════════════════════════════
 //  RENDER GROUPS
 // ════════════════════════════════════════════════════════════
+function renderTablaGrupos(){
+  const grid = document.getElementById("tabla-grupos-grid");
+  if(!grid) return;
+  grid.innerHTML = "";
+
+  Object.entries(GROUPS).forEach(([grp, teams]) => {
+    // Init standings for each team
+    const standing = {};
+    teams.forEach(t => {
+      standing[t] = {PJ:0, PG:0, PE:0, PP:0, GF:0, GC:0, DG:0, PTS:0};
+    });
+
+    // Get all group matches that have results
+    const matches = ALL_GROUP_MATCHES.filter(m => m.group === grp);
+    matches.forEach(m => {
+      const res = allResults[m.id];
+      if(!res || res.home === undefined || res.away === undefined) return;
+      const gh = parseInt(res.home), ga = parseInt(res.away);
+      if(isNaN(gh) || isNaN(ga)) return;
+
+      const h = standing[m.home];
+      const a = standing[m.away];
+      if(!h || !a) return;
+
+      h.PJ++; a.PJ++;
+      h.GF += gh; h.GC += ga; h.DG += gh - ga;
+      a.GF += ga; a.GC += gh; a.DG += ga - gh;
+
+      if(gh > ga){       h.PG++; h.PTS+=3; a.PP++; }
+      else if(gh < ga){  a.PG++; a.PTS+=3; h.PP++; }
+      else{              h.PE++; h.PTS+=1; a.PE++; a.PTS+=1; }
+    });
+
+    // Sort: PTS → DG → GF → name
+    const sorted = teams.slice().sort((a,b) => {
+      const sa = standing[a], sb = standing[b];
+      if(sb.PTS !== sa.PTS) return sb.PTS - sa.PTS;
+      if(sb.DG  !== sa.DG)  return sb.DG  - sa.DG;
+      if(sb.GF  !== sa.GF)  return sb.GF  - sa.GF;
+      return a.localeCompare(b);
+    });
+
+    const card = document.createElement("div");
+    card.className = "standing-card";
+    card.innerHTML = `<div class="standing-header">GRUPO ${grp}</div>
+    <table class="standing-table">
+      <thead>
+        <tr>
+          <th class="left" colspan="2">Selección</th>
+          <th title="Partidos Jugados">PJ</th>
+          <th title="Ganados">PG</th>
+          <th title="Empatados">PE</th>
+          <th title="Perdidos">PP</th>
+          <th title="Goles a Favor">GF</th>
+          <th title="Goles en Contra">GC</th>
+          <th title="Diferencia de Gol">DG</th>
+          <th title="Puntos">PTS</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${sorted.map((team, i) => {
+          const s = standing[team];
+          const rowClass = i < 3 ? "qualified" : "eliminated";
+          const flag = FLAGS[team] || "🏴";
+          const dg = s.DG > 0 ? `+${s.DG}` : s.DG;
+          return `<tr class="${rowClass}">
+            <td class="standing-rank">${i+1}</td>
+            <td class="left"><div class="flag-name">${flag} ${team}</div></td>
+            <td>${s.PJ}</td>
+            <td>${s.PG}</td>
+            <td>${s.PE}</td>
+            <td>${s.PP}</td>
+            <td>${s.GF}</td>
+            <td>${s.GC}</td>
+            <td>${dg}</td>
+            <td class="pts-cell">${s.PTS}</td>
+          </tr>`;
+        }).join("")}
+      </tbody>
+    </table>
+    <div style="font-size:.65rem;color:var(--muted);padding:.4rem .8rem;display:flex;gap:1rem">
+      <span><span style="color:var(--green)">■</span> Clasifican a dieciseisavos</span>
+      <span><span style="color:var(--red)">■</span> Eliminados</span>
+    </div>`;
+    grid.appendChild(card);
+  });
+}
+
 function renderGroups(){
   const grid = f("groups-grid");
   grid.innerHTML="";
@@ -807,6 +939,7 @@ function renderMatch(m){
   const matchTime = new Date(m.datetime).getTime();
   const locked = now >= matchTime;
   const isTBD = m.home==="TBD"||m.away==="TBD";
+  const finished = locked && allResults[m.id] !== undefined;
 
   const result = allResults[m.id]||null;
   const myPred = (allPredictions[m.id]||{})[currentUser?.id]||null;
@@ -818,48 +951,66 @@ function renderMatch(m){
   const flagH = FLAGS[m.home]||"🏴";
   const flagA = FLAGS[m.away]||"🏴";
 
-  // Points badge
+  // Points badge (solo mi pronóstico)
   let badge="";
   if(result && myPred){
     const pts = calcPoints(m, result, myPred);
     if(pts>0) badge=`<span class="match-result-badge">${pts > (m.type==="group"?3:2) ? "✨":"⭐"} +${pts} pts</span>`;
-    else if(pts===0) badge=`<span class="match-result-badge lost">0 pts</span>`;
+    else badge=`<span class="match-result-badge lost">0 pts</span>`;
+  } else if(result && !myPred && locked){
+    badge=`<span class="match-result-badge lost">Sin pronóstico – 0 pts</span>`;
   }
 
-  // Other predictions summary
+  // Todos los pronósticos (se muestran cuando hay resultado)
   let predsHtml="";
   if(result){
     const mp = allPredictions[m.id]||{};
-    const rows = Object.entries(mp).filter(([uid])=>uid!==currentUser?.id).map(([uid,p])=>{
+    const allEntries = Object.entries(mp);
+    // Incluir también el propio usuario
+    const rows = allEntries.map(([uid,p])=>{
       const uname = (users[uid]||{}).name||uid;
       const pts = calcPoints(m,result,p);
-      return `<div class="pred-row"><span class="pred-name">${uname}</span><span class="pred-score">${p.home}-${p.away} <b style="color:var(--green)">+${pts}</b></span></div>`;
+      const isMe = uid === currentUser?.id;
+      return `<div class="pred-row">
+        <span class="pred-name">${isMe?"👤 Vos":uname}</span>
+        <span class="pred-score">${p.home}-${p.away} <b style="color:${pts>0?"var(--green)":"var(--muted)"}">+${pts} pts</b></span>
+      </div>`;
     });
-    if(rows.length) predsHtml=`<div class="predictions-summary">${rows.join("")}</div>`;
+    if(rows.length) predsHtml=`
+      <div class="predictions-summary">
+        <div style="font-size:.68rem;color:var(--muted);font-weight:600;margin-bottom:.25rem">📊 Pronósticos:</div>
+        ${rows.join("")}
+      </div>`;
   }
 
   const disabledAttr = (locked||isTBD)?"disabled":"";
 
+  // Estado del partido
+  let statusHtml="";
+  if(finished){
+    statusHtml=`<div class="match-locked" style="color:var(--green)">✅ Partido finalizado</div>`;
+  } else if(locked){
+    statusHtml=`<div class="match-locked">🔒 Partido en curso – pronóstico cerrado</div>`;
+  }
+
   return `
   <div class="match-card" id="mc-${m.id}">
-    <div class="match-meta">${fmtDate}${result?` · <b style="color:var(--green)">Resultado: ${result.home}-${result.away}</b>`:""}</div>
+    <div class="match-meta">${fmtDate}</div>
     <div class="match-teams">
       <span class="match-team">${flagH} ${m.home}</span>
-      <span class="match-vs">vs</span>
+      <span class="match-vs">${result ? `<span style="font-size:1.1rem;font-weight:800;color:var(--text)">${result.home} – ${result.away}</span>` : "vs"}</span>
       <span class="match-team right">${m.away} ${flagA}</span>
     </div>
     ${!isTBD?`
-    <div class="match-score-inputs">
+    ${!finished ? `<div class="match-score-inputs">
       <input class="score-input" type="number" min="0" max="20" id="ph-${m.id}"
         value="${myPred?myPred.home:""}" placeholder="?" ${disabledAttr} />
       <span class="score-dash">–</span>
       <input class="score-input" type="number" min="0" max="20" id="pa-${m.id}"
         value="${myPred?myPred.away:""}" placeholder="?" ${disabledAttr} />
-    </div>
-    ${locked
-      ? `<div class="match-locked">🔒 Partido iniciado – pronóstico cerrado</div>`
-      : `<button class="btn-save-match" onclick="savePred('${m.id}')">Guardar pronóstico</button>`
-    }
+    </div>` : ""}
+    ${!locked ? `<button class="btn-save-match" onclick="savePred('${m.id}')">Guardar pronóstico</button>` : ""}
+    ${statusHtml}
     ${badge}
     ${predsHtml}
     `:`<div class="match-locked" style="margin-top:.5rem">⏳ Cruce por confirmarse</div>`}
