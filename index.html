@@ -308,6 +308,7 @@
     .standing-table td.left{text-align:left;font-weight:600}
     .standing-table tr:last-child td{border-bottom:none}
     .standing-table tr.qualified td{background:rgba(34,197,94,.06)}
+    .standing-table tr.thirdplace td{background:rgba(247,201,72,.08)}
     .standing-table tr.eliminated td{background:rgba(239,68,68,.06)}
     .standing-rank{
       color:var(--muted);font-size:.75rem;width:1.5rem;
@@ -597,38 +598,46 @@ function generateGroupMatches(){
   ];
 }
 
-// Eliminatorias (los cruces aún son TBD)
+// Eliminatorias — 32 equipos (24 directos + 8 mejores terceros)
 const KNOCKOUT_MATCHES = [
-  // Dieciseisavos
-  {id:"R32_1", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-06-28T22:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_2", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-06-29T22:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_3", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-06-29T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_4", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-06-30T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_5", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-06-30T22:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_6", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-01T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_7", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-01T22:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_8", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-02T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_9", type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-02T22:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_10",type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-03T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_11",type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-03T22:00:00",pointsWinner:2,pointsExact:2},
-  {id:"R32_12",type:"knockout",round:"Dieciseisavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-04T18:00:00",pointsWinner:2,pointsExact:2},
-  // Octavos
-  {id:"QF_1",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-04T22:00:00",pointsWinner:2,pointsExact:2},
-  {id:"QF_2",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-05T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"QF_3",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-05T22:00:00",pointsWinner:2,pointsExact:2},
-  {id:"QF_4",type:"knockout",round:"Octavos de Final",home:"TBD",away:"TBD",datetime:"2026-07-06T18:00:00",pointsWinner:2,pointsExact:2},
-  // Cuartos
-  {id:"SF_1",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-09T22:00:00",pointsWinner:2,pointsExact:2},
-  {id:"SF_2",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-10T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"SF_3",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-10T22:00:00",pointsWinner:2,pointsExact:2},
-  {id:"SF_4",type:"knockout",round:"Cuartos de Final",home:"TBD",away:"TBD",datetime:"2026-07-11T18:00:00",pointsWinner:2,pointsExact:2},
-  // Semis
-  {id:"SEMI_1",type:"knockout",round:"Semifinal",home:"TBD",away:"TBD",datetime:"2026-07-14T22:00:00",pointsWinner:2,pointsExact:2},
-  {id:"SEMI_2",type:"knockout",round:"Semifinal",home:"TBD",away:"TBD",datetime:"2026-07-15T22:00:00",pointsWinner:2,pointsExact:2},
-  // Tercer puesto
-  {id:"THIRD",type:"knockout",round:"Tercer y Cuarto Puesto",home:"TBD",away:"TBD",datetime:"2026-07-18T22:00:00",pointsWinner:2,pointsExact:2},
-  // Final
-  {id:"FINAL",type:"knockout",round:"Final",home:"TBD",away:"TBD",datetime:"2026-07-19T18:00:00",pointsWinner:2,pointsExact:2},
+  // Dieciseisavos de Final (16 partidos) — fechas/horas confirmadas
+  {id:"R32_1", type:"knockout",round:"Dieciseisavos de Final",home:"Sudáfrica",    away:"Canadá",           datetime:"2026-06-28T16:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_2", type:"knockout",round:"Dieciseisavos de Final",home:"Brasil",       away:"Japón",            datetime:"2026-06-29T14:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_3", type:"knockout",round:"Dieciseisavos de Final",home:"Alemania",     away:"Paraguay",         datetime:"2026-06-29T17:30:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_4", type:"knockout",round:"Dieciseisavos de Final",home:"Países Bajos", away:"Marruecos",        datetime:"2026-06-29T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_5", type:"knockout",round:"Dieciseisavos de Final",home:"Costa de Marfil",away:"Noruega",        datetime:"2026-06-30T14:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_6", type:"knockout",round:"Dieciseisavos de Final",home:"Francia",      away:"Suecia",           datetime:"2026-06-30T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_7", type:"knockout",round:"Dieciseisavos de Final",home:"México",       away:"3° (C/E/F/H/I)",   datetime:"2026-06-30T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_8", type:"knockout",round:"Dieciseisavos de Final",home:"1ro Grupo L",  away:"3° (E/H/I/J/K)",   datetime:"2026-07-01T13:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_9", type:"knockout",round:"Dieciseisavos de Final",home:"Bélgica",      away:"3° (A/E/H/I/J)",   datetime:"2026-07-01T17:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_10",type:"knockout",round:"Dieciseisavos de Final",home:"Estados Unidos",away:"Bosnia",          datetime:"2026-07-01T21:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_11",type:"knockout",round:"Dieciseisavos de Final",home:"España",       away:"2do Grupo J",      datetime:"2026-07-02T16:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_12",type:"knockout",round:"Dieciseisavos de Final",home:"2do Grupo K",  away:"2do Grupo L",      datetime:"2026-07-02T20:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_13",type:"knockout",round:"Dieciseisavos de Final",home:"Suiza",        away:"3° (E/F/G/I/J)",   datetime:"2026-07-03T00:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_14",type:"knockout",round:"Dieciseisavos de Final",home:"Australia",    away:"Egipto",           datetime:"2026-07-03T15:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_15",type:"knockout",round:"Dieciseisavos de Final",home:"Argentina",    away:"Cabo Verde",       datetime:"2026-07-03T19:00:00",pointsWinner:2,pointsExact:2},
+  {id:"R32_16",type:"knockout",round:"Dieciseisavos de Final",home:"1ro Grupo K",  away:"3° (D/E/I/J/L)",   datetime:"2026-07-03T22:30:00",pointsWinner:2,pointsExact:2},
+  // Octavos de Final (8 partidos) — fechas/horas confirmadas
+  {id:"QF_1",type:"knockout",round:"Octavos de Final",home:"Ganador P73",away:"Ganador P75",datetime:"2026-07-04T14:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_2",type:"knockout",round:"Octavos de Final",home:"Ganador P74",away:"Ganador P77",datetime:"2026-07-04T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_3",type:"knockout",round:"Octavos de Final",home:"Ganador P76",away:"Ganador P78",datetime:"2026-07-05T17:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_4",type:"knockout",round:"Octavos de Final",home:"Ganador P79",away:"Ganador P80",datetime:"2026-07-05T21:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_5",type:"knockout",round:"Octavos de Final",home:"Ganador P83",away:"Ganador P84",datetime:"2026-07-06T16:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_6",type:"knockout",round:"Octavos de Final",home:"Ganador P81",away:"Ganador P82",datetime:"2026-07-06T21:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_7",type:"knockout",round:"Octavos de Final",home:"Ganador P86",away:"Ganador P88",datetime:"2026-07-07T13:00:00",pointsWinner:2,pointsExact:2},
+  {id:"QF_8",type:"knockout",round:"Octavos de Final",home:"Ganador P85",away:"Ganador P87",datetime:"2026-07-07T17:00:00",pointsWinner:2,pointsExact:2},
+  // Cuartos de Final (4 partidos) — fechas/horas confirmadas
+  {id:"SF_1",type:"knockout",round:"Cuartos de Final",home:"Ganador P89",away:"Ganador P90",datetime:"2026-07-09T17:00:00",pointsWinner:2,pointsExact:2},
+  {id:"SF_2",type:"knockout",round:"Cuartos de Final",home:"Ganador P93",away:"Ganador P94",datetime:"2026-07-10T16:00:00",pointsWinner:2,pointsExact:2},
+  {id:"SF_3",type:"knockout",round:"Cuartos de Final",home:"Ganador P91",away:"Ganador P92",datetime:"2026-07-11T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"SF_4",type:"knockout",round:"Cuartos de Final",home:"Ganador P95",away:"Ganador P96",datetime:"2026-07-11T22:00:00",pointsWinner:2,pointsExact:2},
+  // Semifinales (2 partidos) — fechas/horas confirmadas
+  {id:"SEMI_1",type:"knockout",round:"Semifinal",home:"Ganador P97",away:"Ganador P98",datetime:"2026-07-14T16:00:00",pointsWinner:2,pointsExact:2},
+  {id:"SEMI_2",type:"knockout",round:"Semifinal",home:"Ganador P99",away:"Ganador P100",datetime:"2026-07-15T16:00:00",pointsWinner:2,pointsExact:2},
+  // Tercer puesto — fecha/hora confirmada
+  {id:"THIRD",type:"knockout",round:"Tercer y Cuarto Puesto",home:"Perdedor P101",away:"Perdedor P102",datetime:"2026-07-18T18:00:00",pointsWinner:2,pointsExact:2},
+  // Final — fecha/hora confirmada
+  {id:"FINAL",type:"knockout",round:"Final",home:"Ganador P101",away:"Ganador P102",datetime:"2026-07-19T16:00:00",pointsWinner:2,pointsExact:2},
 ];
 
 const ALL_GROUP_MATCHES = generateGroupMatches();
@@ -814,48 +823,66 @@ function listenRealtime(){
 // ════════════════════════════════════════════════════════════
 //  RENDER GROUPS
 // ════════════════════════════════════════════════════════════
+function computeGroupStanding(grp, teams){
+  const standing = {};
+  teams.forEach(t => {
+    standing[t] = {team:t, group:grp, PJ:0, PG:0, PE:0, PP:0, GF:0, GC:0, DG:0, PTS:0};
+  });
+
+  const matches = ALL_GROUP_MATCHES.filter(m => m.group === grp);
+  matches.forEach(m => {
+    const res = allResults[m.id];
+    if(!res || res.home === undefined || res.away === undefined) return;
+    const gh = parseInt(res.home), ga = parseInt(res.away);
+    if(isNaN(gh) || isNaN(ga)) return;
+
+    const h = standing[m.home];
+    const a = standing[m.away];
+    if(!h || !a) return;
+
+    h.PJ++; a.PJ++;
+    h.GF += gh; h.GC += ga; h.DG += gh - ga;
+    a.GF += ga; a.GC += gh; a.DG += ga - gh;
+
+    if(gh > ga){       h.PG++; h.PTS+=3; a.PP++; }
+    else if(gh < ga){  a.PG++; a.PTS+=3; h.PP++; }
+    else{              h.PE++; h.PTS+=1; a.PE++; a.PTS+=1; }
+  });
+
+  const sorted = teams.slice().sort((a,b) => {
+    const sa = standing[a], sb = standing[b];
+    if(sb.PTS !== sa.PTS) return sb.PTS - sa.PTS;
+    if(sb.DG  !== sa.DG)  return sb.DG  - sa.DG;
+    if(sb.GF  !== sa.GF)  return sb.GF  - sa.GF;
+    return a.localeCompare(b);
+  });
+
+  return sorted.map(t => standing[t]);
+}
+
 function renderTablaGrupos(){
   const grid = document.getElementById("tabla-grupos-grid");
   if(!grid) return;
   grid.innerHTML = "";
 
+  // Calcular standings de TODOS los grupos primero
+  const allStandings = {}; // { grp: [team1stats, team2stats, ...] ordenado }
   Object.entries(GROUPS).forEach(([grp, teams]) => {
-    // Init standings for each team
-    const standing = {};
-    teams.forEach(t => {
-      standing[t] = {PJ:0, PG:0, PE:0, PP:0, GF:0, GC:0, DG:0, PTS:0};
-    });
+    allStandings[grp] = computeGroupStanding(grp, teams);
+  });
 
-    // Get all group matches that have results
-    const matches = ALL_GROUP_MATCHES.filter(m => m.group === grp);
-    matches.forEach(m => {
-      const res = allResults[m.id];
-      if(!res || res.home === undefined || res.away === undefined) return;
-      const gh = parseInt(res.home), ga = parseInt(res.away);
-      if(isNaN(gh) || isNaN(ga)) return;
+  // Determinar los 8 mejores terceros entre los 12 grupos
+  const allThirds = Object.values(allStandings).map(arr => arr[2]); // posición 3 (índice 2) de cada grupo
+  const thirdsSorted = allThirds.slice().sort((a,b)=>{
+    if(b.PTS !== a.PTS) return b.PTS - a.PTS;
+    if(b.DG  !== a.DG)  return b.DG  - a.DG;
+    if(b.GF  !== a.GF)  return b.GF  - a.GF;
+    return a.team.localeCompare(b.team);
+  });
+  const best8ThirdTeams = new Set(thirdsSorted.slice(0,8).map(t=>t.team));
 
-      const h = standing[m.home];
-      const a = standing[m.away];
-      if(!h || !a) return;
-
-      h.PJ++; a.PJ++;
-      h.GF += gh; h.GC += ga; h.DG += gh - ga;
-      a.GF += ga; a.GC += gh; a.DG += ga - gh;
-
-      if(gh > ga){       h.PG++; h.PTS+=3; a.PP++; }
-      else if(gh < ga){  a.PG++; a.PTS+=3; h.PP++; }
-      else{              h.PE++; h.PTS+=1; a.PE++; a.PTS+=1; }
-    });
-
-    // Sort: PTS → DG → GF → name
-    const sorted = teams.slice().sort((a,b) => {
-      const sa = standing[a], sb = standing[b];
-      if(sb.PTS !== sa.PTS) return sb.PTS - sa.PTS;
-      if(sb.DG  !== sa.DG)  return sb.DG  - sa.DG;
-      if(sb.GF  !== sa.GF)  return sb.GF  - sa.GF;
-      return a.localeCompare(b);
-    });
-
+  // Renderizar cada grupo con colores correctos
+  Object.entries(allStandings).forEach(([grp, sortedStats]) => {
     const card = document.createElement("div");
     card.className = "standing-card";
     card.innerHTML = `<div class="standing-header">GRUPO ${grp}</div>
@@ -874,9 +901,12 @@ function renderTablaGrupos(){
         </tr>
       </thead>
       <tbody>
-        ${sorted.map((team, i) => {
-          const s = standing[team];
-          const rowClass = i < 3 ? "qualified" : "eliminated";
+        ${sortedStats.map((s, i) => {
+          const team = s.team;
+          let rowClass;
+          if(i < 2) rowClass = "qualified";
+          else if(i === 2) rowClass = best8ThirdTeams.has(team) ? "qualified" : "thirdplace";
+          else rowClass = "eliminated";
           const flag = FLAGS[team] || "🏴";
           const dg = s.DG > 0 ? `+${s.DG}` : s.DG;
           return `<tr class="${rowClass}">
@@ -894,12 +924,71 @@ function renderTablaGrupos(){
         }).join("")}
       </tbody>
     </table>
-    <div style="font-size:.65rem;color:var(--muted);padding:.4rem .8rem;display:flex;gap:1rem">
-      <span><span style="color:var(--green)">■</span> Clasifican a dieciseisavos</span>
+    <div style="font-size:.65rem;color:var(--muted);padding:.4rem .8rem;display:flex;gap:1rem;flex-wrap:wrap">
+      <span><span style="color:var(--green)">■</span> Clasifican</span>
+      <span><span style="color:var(--accent)">■</span> 3° en espera</span>
       <span><span style="color:var(--red)">■</span> Eliminados</span>
     </div>`;
     grid.appendChild(card);
   });
+
+  // Renderizar tabla de "Mejores Terceros"
+  renderMejoresTerceros(thirdsSorted, best8ThirdTeams);
+}
+
+function renderMejoresTerceros(thirdsSorted, best8ThirdTeams){
+  let container = document.getElementById("mejores-terceros-card");
+  if(!container){
+    container = document.createElement("div");
+    container.id = "mejores-terceros-card";
+    container.className = "standing-card";
+    container.style.gridColumn = "1 / -1";
+    const grid = document.getElementById("tabla-grupos-grid");
+    grid.insertBefore(container, grid.firstChild);
+  }
+
+  container.innerHTML = `<div class="standing-header">🏅 Mejores Terceros (8 de 12 clasifican)</div>
+  <table class="standing-table">
+    <thead>
+      <tr>
+        <th class="left" colspan="2">Selección</th>
+        <th>Grupo</th>
+        <th title="Partidos Jugados">PJ</th>
+        <th title="Ganados">PG</th>
+        <th title="Empatados">PE</th>
+        <th title="Perdidos">PP</th>
+        <th title="Goles a Favor">GF</th>
+        <th title="Goles en Contra">GC</th>
+        <th title="Diferencia de Gol">DG</th>
+        <th title="Puntos">PTS</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${thirdsSorted.map((s, i) => {
+        const team = s.team;
+        const rowClass = best8ThirdTeams.has(team) ? "qualified" : "eliminated";
+        const flag = FLAGS[team] || "🏴";
+        const dg = s.DG > 0 ? `+${s.DG}` : s.DG;
+        return `<tr class="${rowClass}">
+          <td class="standing-rank">${i+1}</td>
+          <td class="left"><div class="flag-name">${flag} ${team}</div></td>
+          <td style="font-weight:700;color:var(--muted)">${s.group}</td>
+          <td>${s.PJ}</td>
+          <td>${s.PG}</td>
+          <td>${s.PE}</td>
+          <td>${s.PP}</td>
+          <td>${s.GF}</td>
+          <td>${s.GC}</td>
+          <td>${dg}</td>
+          <td class="pts-cell">${s.PTS}</td>
+        </tr>`;
+      }).join("")}
+    </tbody>
+  </table>
+  <div style="font-size:.65rem;color:var(--muted);padding:.4rem .8rem;display:flex;gap:1rem">
+    <span><span style="color:var(--green)">■</span> Clasifican a dieciseisavos</span>
+    <span><span style="color:var(--red)">■</span> Eliminados</span>
+  </div>`;
 }
 
 function renderGroups(){
