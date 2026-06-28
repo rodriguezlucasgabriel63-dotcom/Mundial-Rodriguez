@@ -1010,9 +1010,10 @@ function renderGroups(){
 function renderKnockout(){
   const grid = f("knockout-grid");
   grid.innerHTML="";
-  const rounds=["Octavos de Final","Cuartos de Final","Semifinal","Final"];
+  const rounds=["Dieciseisavos de Final","Octavos de Final","Cuartos de Final","Semifinal","Tercer y Cuarto Puesto","Final"];
   rounds.forEach(round=>{
     const matches = KNOCKOUT_MATCHES.filter(m=>m.round===round);
+    if(!matches.length) return;
     const card = document.createElement("div");
     card.className="group-card";
     card.innerHTML=`<div class="group-header">${round}</div><div class="group-matches">${matches.map(m=>renderMatch(m)).join("")}</div>`;
