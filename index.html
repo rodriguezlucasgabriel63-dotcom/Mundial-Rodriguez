@@ -451,11 +451,10 @@
   <div id="tab-eliminatorias" class="tab-content">
     <div class="section-title">Eliminatorias</div>
     <div class="knockout-info">
-      <p><strong>Cómo funciona en eliminatorias:</strong><br>
-      Como aún no se conocen los cruces, los pronósticos valen diferente:<br>
-      • <strong>+2 puntos</strong> si acertás el equipo ganador de ese cruce.<br>
-      • <strong>+2 puntos extra</strong> si además acertás el resultado exacto.<br>
-      Los pronósticos se habilitan a medida que se conozcan los cruces.</p>
+      <p><strong>Sistema de puntos en eliminatorias:</strong><br>
+      • <strong>+3 puntos</strong> si acertás el equipo que pasa.<br>
+      • <strong>+7 puntos extra</strong> si además acertás el resultado exacto.<br>
+      • Total posible por partido: <strong>10 puntos</strong>.</p>
     </div>
     <div class="groups-grid" id="knockout-grid">
       <div class="loader"><div class="spinner"></div> Cargando eliminatorias...</div>
@@ -627,17 +626,17 @@ const KNOCKOUT_MATCHES = [
   {id:"QF_7",type:"knockout",round:"Octavos de Final",home:"Argentina",     away:"Egipto",     datetime:"2026-07-07T13:00:00",pointsWinner:2,pointsExact:2},
   {id:"QF_8",type:"knockout",round:"Octavos de Final",home:"Suiza",         away:"Colombia",   datetime:"2026-07-07T17:00:00",pointsWinner:2,pointsExact:2},
   // Cuartos de Final (4 partidos) — fechas/horas confirmadas
-  {id:"SF_1",type:"knockout",round:"Cuartos de Final",home:"Francia",   away:"Marruecos", datetime:"2026-07-09T17:00:00",pointsWinner:2,pointsExact:2},
-  {id:"SF_2",type:"knockout",round:"Cuartos de Final",home:"España",    away:"Bélgica",   datetime:"2026-07-10T16:00:00",pointsWinner:2,pointsExact:2},
-  {id:"SF_3",type:"knockout",round:"Cuartos de Final",home:"Noruega",   away:"Inglaterra",datetime:"2026-07-11T18:00:00",pointsWinner:2,pointsExact:2},
-  {id:"SF_4",type:"knockout",round:"Cuartos de Final",home:"Argentina", away:"Suiza",     datetime:"2026-07-11T22:00:00",pointsWinner:2,pointsExact:2},
+  {id:"SF_1",type:"knockout",round:"Cuartos de Final",home:"Francia",   away:"Marruecos", datetime:"2026-07-09T17:00:00",pointsWinner:3,pointsExact:7},
+  {id:"SF_2",type:"knockout",round:"Cuartos de Final",home:"España",    away:"Bélgica",   datetime:"2026-07-10T16:00:00",pointsWinner:3,pointsExact:7},
+  {id:"SF_3",type:"knockout",round:"Cuartos de Final",home:"Noruega",   away:"Inglaterra",datetime:"2026-07-11T18:00:00",pointsWinner:3,pointsExact:7},
+  {id:"SF_4",type:"knockout",round:"Cuartos de Final",home:"Argentina", away:"Suiza",     datetime:"2026-07-11T22:00:00",pointsWinner:3,pointsExact:7},
   // Semifinales (2 partidos) — fechas/horas confirmadas
-  {id:"SEMI_1",type:"knockout",round:"Semifinal",home:"Ganador P97",away:"Ganador P98",datetime:"2026-07-14T16:00:00",pointsWinner:2,pointsExact:2},
-  {id:"SEMI_2",type:"knockout",round:"Semifinal",home:"Ganador P99",away:"Ganador P100",datetime:"2026-07-15T16:00:00",pointsWinner:2,pointsExact:2},
+  {id:"SEMI_1",type:"knockout",round:"Semifinal",home:"Ganador P97",away:"Ganador P98",datetime:"2026-07-14T16:00:00",pointsWinner:3,pointsExact:7},
+  {id:"SEMI_2",type:"knockout",round:"Semifinal",home:"Ganador P99",away:"Ganador P100",datetime:"2026-07-15T16:00:00",pointsWinner:3,pointsExact:7},
   // Tercer puesto — fecha/hora confirmada
-  {id:"THIRD",type:"knockout",round:"Tercer y Cuarto Puesto",home:"Perdedor P101",away:"Perdedor P102",datetime:"2026-07-18T18:00:00",pointsWinner:2,pointsExact:2},
+  {id:"THIRD",type:"knockout",round:"Tercer y Cuarto Puesto",home:"Perdedor P101",away:"Perdedor P102",datetime:"2026-07-18T18:00:00",pointsWinner:3,pointsExact:7},
   // Final — fecha/hora confirmada
-  {id:"FINAL",type:"knockout",round:"Final",home:"Ganador P101",away:"Ganador P102",datetime:"2026-07-19T16:00:00",pointsWinner:2,pointsExact:2},
+  {id:"FINAL",type:"knockout",round:"Final",home:"Ganador P101",away:"Ganador P102",datetime:"2026-07-19T16:00:00",pointsWinner:3,pointsExact:7},
 ];
 
 const ALL_GROUP_MATCHES = generateGroupMatches();
